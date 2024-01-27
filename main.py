@@ -3,12 +3,11 @@ import random
 import sys
 
 
-class Game():
-    def generate_word(self):
-        with open("words.txt", "r", encoding="utf-8") as file:
-            lines = file.read().splitlines()
-            return random.choice(lines)
+def clear_console():
+        os.system("cls" if os.name == "nt" else "clear")
 
+
+class Game():
     def __init__(self):
         self.letters = set()
         self.letters_left = set("abcdefghijklmnopqrstuvwxyz")
@@ -17,9 +16,14 @@ class Game():
         self.tries = 7
         self.word = self.generate_word()
 
+    def generate_word(self):
+        with open("words.txt", "r", encoding="utf-8") as file:
+            lines = file.read().splitlines()
+            return random.choice(lines)
+
     def process_fail(self):
         self.is_failed = True
-        os.system("clear")
+        clear_console()
         print(f"You were hanged! Answer was \"{self.word}\"")
         input("Press enter to continue")
 
@@ -30,7 +34,7 @@ class Game():
 
     def process_won(self):
         self.is_won = True
-        os.system("clear")
+        clear_console()
         print(f"You won! Answer is \"{self.word}\"")
         input("Press enter to continue")
 
@@ -56,7 +60,6 @@ class Game():
                 self.process_error()
 
     def print_current_answer(self):
-        # print(self.word)
         print("Current answer: ", end='')
         for letter in self.word:
             if letter in self.letters:
@@ -69,28 +72,26 @@ class Game():
 
     def play(self):
         while not (self.is_failed or self.is_won):
-            os.system('clear')
+            clear_console()
             self.print_current_answer()
             next_letter = input('Enter letter: ')
             self.add_letter(next_letter)
 
-def main():
+
+if __name__ == "__main__":
     while True:
-        os.system('clear')
+        clear_console()
         print('------ HANGMAN ------')
         print('1. Start new game')
         print('2. Exit')
 
         ans = input('Your answer: ')
         if ans == '1':
-            os.system('clear')
+            clear_console()
             game = Game()
             game.play()
         elif ans == '2':
-            os.system('clear')
+            clear_console()
             sys.exit()
         else:
             continue
-
-if __name__ == "__main__":
-    main()
